@@ -69,10 +69,16 @@ int main(int argc, char** argv) {
     std::cout << "randomized select: " << randomizedSelect(numbers, 0, numbers.size() - 1, idxMed) << std::endl;
     Timing::getInstance()->stopRecord("randomized select");
 
-    // ein weiterer Median - Algorithmus aus der Literatur
-    Timing::getInstance()->startRecord("median of medians");
-    std::cout << "median of medians: " << getMedianOfMedians(numbers, idxMed) << std::endl;
-    Timing::getInstance()->stopRecord("median of medians");
+    // ein weiterer Median - Algorithmus aus der Literatur - implemented with std::vector
+    Timing::getInstance()->startRecord("vector median of medians");
+    std::cout << "vector median of medians: " << getMedianOfMedians(numbers, idxMed) << std::endl;
+    Timing::getInstance()->stopRecord("vector median of medians");
+
+    // ein weiterer Median - Algorithmus aus der Literatur - realized with array
+    std::copy(numbers.begin(), numbers.end(), array);
+    Timing::getInstance()->startRecord("array median of medians");
+    std::cout << "array median of medians: " << getMedianOfMedians(array, 0, numbers.size() - 1, idxMed) << std::endl;
+    Timing::getInstance()->stopRecord("array median of medians");
 
     // noch ein ein weiterer Median - Algorithmus weil wir so cool sind
     Timing::getInstance()->startRecord("wirth");
