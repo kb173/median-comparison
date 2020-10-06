@@ -5,7 +5,7 @@
 #include <fstream>
 #include <vector>
 
-std::vector<size_t>& readFromFile(const char* filePath)
+std::vector<size_t> readFromFile(const char* filePath)
 {
     std::vector<size_t> numbers;
     std::cout << "read file: " << filePath << "..." << std::endl;
@@ -22,12 +22,11 @@ std::vector<size_t>& readFromFile(const char* filePath)
         size_t idx = 0;
         while (in.good() && idx < count) {
             std::getline(in, line);
-            std::cout << "readline: " << line << std::endl;
             //long val = std::stol(line);
             //std::cout << "as long: " << val << std::endl;
             unsigned long ulval = std::stoul(line);
-            std::cout << "as unsigned long: " << ulval << std::endl;
-            numbers.push_back(ulval);
+            //std::cout << "as unsigned long: " << ulval << std::endl;
+            numbers.push_back((size_t)ulval); // auto cast to uint
             idx++;
         }
     }
