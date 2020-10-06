@@ -7,6 +7,20 @@
 #include "MedianOfMedians.h"
 #include "RandomizedSelect.h"
 
+// comparator function used by qsort
+int compare(const void* a, const void* b)
+{
+    // TODO: check why this does not return the same results???
+    //return (*(size_t*)a - *(size_t*)b);
+    //return (int)(*(int*)a - *(int*)b);
+    //return (int)(*(const int*)a - *(const int*)b);
+    size_t arg1 = *static_cast<const size_t*>(a);
+    size_t arg2 = *static_cast<const size_t*>(b);
+    if (arg1 < arg2) return -1;
+    if (arg1 > arg2) return 1;
+    return 0;
+}
+
 int main(int argc, char** argv) {
     // read test values from input file
     Timing::getInstance()->startRecord("init");
@@ -39,16 +53,16 @@ int main(int argc, char** argv) {
     size_t* array = new size_t[999999]; // create and fill new array
     std::copy(numbers.begin(), numbers.end(), array);
     Timing::getInstance()->startRecord("array quicksort");
-    std::qsort(array, numbers.size(), sizeof(size_t), [](const void* a, const void* b)
-    {
-        size_t arg1 = *static_cast<const size_t*>(a);
-        size_t arg2 = *static_cast<const size_t*>(b);
-        if (arg1 < arg2) return -1;
-        if (arg1 > arg2) return 1;
-        return 0;
-    });
+    std::qsort(array, numbers.size(), sizeof(size_t), compare);
     std::cout << "array quicksort median: " << array[idxMed] << std::endl;
     Timing::getInstance()->stopRecord("array quicksort");
+
+    // comparison "quick" sort with std::sort (introsort)
+    std::copy(numbers.begin(), numbers.end(), array);
+    Timing::getInstance()->startRecord("array std sort");
+    std::sort(array, array + numbers.size());
+    std::cout << "array std sort median: " << array[idxMed] << std::endl;
+    Timing::getInstance()->stopRecord("array std sort");
 
     // vorgestellter Randomzized - Select rekursiv implementiert
     Timing::getInstance()->startRecord("randomized select");
