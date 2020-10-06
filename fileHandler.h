@@ -14,7 +14,6 @@ std::vector<size_t> readFromFile(const char* filePath)
     {
         std::string line;
         std::getline(in, line);
-        std::cout << "read line " << line << std::endl;
         size_t count = std::stoi(line);
 
         std::cout << "total: " << count << " elems" << std::endl;
