@@ -1,11 +1,19 @@
 #include <iostream>
 #include <algorithm> // std::nth_element
 
+#include "common.h"
 #include "fileHandler.h"
 #include "Timing.h"
 #include "MedianQuicksort.h"
 #include "MedianOfMedians.h"
 #include "RandomizedSelect.h"
+
+// TODO:
+// - combine partition function
+// - wirth
+// - fix Median of Medians
+// - fix randomized select
+// - use custom swap for just pointer swapping (check difference)
 
 // comparator function used by qsort
 int compare(const void* a, const void* b)
@@ -21,7 +29,8 @@ int compare(const void* a, const void* b)
     return 0;
 }
 
-int main(int argc, char** argv) {
+int main(int argc, char** argv)
+{
     // read test values from input file
     Timing::getInstance()->startRecord("init");
     std::vector<size_t> numbers = readFromFile("testdata");
@@ -31,16 +40,17 @@ int main(int argc, char** argv) {
     // index of median
     if (numbers.size() % 2 == 0)
     {
-        std::cout << "TODO: define how to handly even datasets" << std::endl;
+        // TODO: just use the next element? calc arithmetic mean?
+        std::cout << "TODO: define how to handle even datasets" << std::endl;
         return 1;
     }
 
     size_t idxMed = (numbers.size() - 1) / 2;
-    std::cout << "median =  " << idxMed << std::endl;
+    std::cout << "idx median = " << idxMed << " of " << numbers.size() << std::endl;
 
     // vollständige Sortierung mit Quicksort und Ausgabe des mittleren Elements
     Timing::getInstance()->startRecord("quicksort");
-    //std::cout << "quicksort median: " << getQuicksortMedian(numbers, idxMed) << std::endl;
+    std::cout << "quicksort median: " << getQuicksortMedian(numbers, idxMed) << std::endl;
     Timing::getInstance()->stopRecord("quicksort");
 
     // using std quicksort for array
@@ -66,22 +76,23 @@ int main(int argc, char** argv) {
 
     // vorgestellter Randomzized - Select rekursiv implementiert
     Timing::getInstance()->startRecord("randomized select");
-    std::cout << "randomized select: " << randomizedSelect(numbers, 0, numbers.size() - 1, idxMed) << std::endl;
+    std::cout << "randomized select: " << randomizedSelect(numbers, 0, numbers.size() - 1, idxMed + 1) << std::endl;
     Timing::getInstance()->stopRecord("randomized select");
 
     // ein weiterer Median - Algorithmus aus der Literatur - implemented with std::vector
     Timing::getInstance()->startRecord("vector median of medians");
-    std::cout << "vector median of medians: " << getMedianOfMedians(numbers, idxMed) << std::endl;
+    std::cout << "vector median of medians: " << getMedianOfMedians(numbers, idxMed + 1) << std::endl;
     Timing::getInstance()->stopRecord("vector median of medians");
 
     // ein weiterer Median - Algorithmus aus der Literatur - realized with array
     std::copy(numbers.begin(), numbers.end(), array);
     Timing::getInstance()->startRecord("array median of medians");
-    std::cout << "array median of medians: " << getMedianOfMedians(array, 0, numbers.size() - 1, idxMed) << std::endl;
+    std::cout << "array median of medians: " << getMedianOfMedians(array, 0, numbers.size() - 1, idxMed + 1) << std::endl;
     Timing::getInstance()->stopRecord("array median of medians");
 
     // noch ein ein weiterer Median - Algorithmus weil wir so cool sind
     Timing::getInstance()->startRecord("wirth");
+    // TODO: implement
     Timing::getInstance()->stopRecord("wirth");
 
     // Verwendung des C++ STL function templates nth_element
