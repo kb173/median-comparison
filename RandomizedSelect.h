@@ -2,42 +2,112 @@
 
 #include <vector>
 
-/*
-// Pseudo code Alux Nimmervoll, Algo vo3
-// Anmerkung: code funktioniert!
+// Lomuto Partitioning
+int randomizedPartition(std::vector<size_t>& values, int p, int r)
+{
+    int i = p + rand() % (r - p); // generate a random number in {p, ..., r}
+    swap(&values[i], &values[r]);
 
-RANDOMIZED-SELECT(A,p,r,i)
-    if (p==r) then return A[p]
-    q=RANDOMIZED_PARTITION(A,p,r) //Pivot Element A[q]
-    k=q-p+1 //Anzahl Elemente A[p..q]
-    if (i==k) then return A[q] //Pivot ist das gesuchte
-    elseif (i<k)
-    then return RANDOMIZED-SELECT(A,p,q-1,i)
-    else return RANDOMIZED-SELECT(A,q+1,r,i-k)
-*/
-
-size_t randomizedPartition(std::vector<size_t>& values, size_t p, size_t r) {
-    size_t i = p + rand() % (r - p + 1); // generate a random number in {p, ..., r}
-    std::swap(values[i], values[r]);
-
-    size_t pivotValue = values[r];
+    int pivotValue = values[r];
     i = p - 1;
-    for (size_t j = p; j < r; j++) {
-        if (values[j] <= pivotValue) {
+    for (int j = p; j < r; j++)
+    {
+        if (values[j] <= pivotValue)
+        {
             i++;
-            std::swap(values[i], values[j]);
+            swap(&values[i], &values[j]);
         }
     }
-    std::swap(values[i + 1], values[r]);
-    return i + 1;
+    swap(&values[i + 1], &values[r]);
+    return (i + 1);
 }
 
-size_t randomizedSelect(std::vector<size_t> values, size_t p, size_t r, size_t i)
+// TODO: Hoare Partitioning
+// https://www.geeksforgeeks.org/quicksort-using-random-pivoting/
+int randomizedPartition2(std::vector<size_t>& values, int low, int high)
 {
+    int i = low + rand() % (high - low); // generate a random number in {p, ..., r}
+    std::swap(values[i], values[low]);
+
+    int pivot = values[low];
+    i = low - 1;
+    int j = high + 1;
+    while (true) {
+        // Find leftmost element greater than
+        // or equal to pivot
+        do {
+            i++;
+        } while (values[i] < pivot);
+
+        // Find rightmost element smaller than
+        // or equal to pivot
+        do {
+            j--;
+        } while (values[j] > pivot);
+
+        // If two pointers met
+        if (i >= j)
+            return j;
+
+        std::swap(values[i], values[j]);
+    }
+}
+
+int randomizedPartition3(std::vector<size_t>& values, int l, int r)
+{
+    int n = r - l + 1;
+    int pivot = rand() % n;
+    std::swap(values[l + pivot], values[r]);
+
+    int x = values[r], i = l;
+    for (int j = l; j <= r - 1; j++)
+    {
+        if (values[j] <= x)
+        {
+            std::swap(values[i], values[j]);
+            i++;
+        }
+    }
+    std::swap(values[i], values[r]);
+    return i;
+}
+
+int randomizedSelect(std::vector<size_t> values, int p, int r, int i)
+{
+    /*
+    // Partition the array around a random element and
+    // get position of pivot element in sorted array
+    int pos = randomizedPartition(values, p, r);
+
+    // If position is same as k
+    if (pos - p == i - 1)
+        return values[pos];
+    if (pos - p > i - 1)  // If position is more, recur for left subarray
+        return randomizedSelect(values, p, pos - 1, i);
+
+    // Else recur for right subarray
+    return randomizedSelect(values, pos + 1, r, i - pos + p - 1);
+    */
+
+    // Pseudo code Alux Nimmervoll, Algo vo3
+    // Anmerkung: code funktioniert!
+    /*
+    RANDOMIZED-SELECT(A,p,r,i)
+        if (p==r) then return A[p]
+        q=RANDOMIZED_PARTITION(A,p,r) //Pivot Element A[q]
+        k=q-p+1 //Anzahl Elemente A[p..q]
+        if (i==k) then return A[q] //Pivot ist das gesuchte
+        elseif (i<k)
+        then return RANDOMIZED-SELECT(A,p,q-1,i)
+        else return RANDOMIZED-SELECT(A,q+1,r,i-k)
+    */
+
     if (p == r) return values[p];
 
-    size_t q = randomizedPartition(values, p, r); // Pivot Element A[q]
-    size_t k = q - p + 1; // Anzahl Elemente A[p..q]
+    //int q = randomizedPartition(values, p, r); // Pivot Element A[q]
+    //int q = randomizedPartition2(values, p, r); // Pivot Element A[q]
+    int q = randomizedPartition3(values, p, r); // Pivot Element A[q]
+    int k = q - p + 1; // Anzahl Elemente A[p..q]
     if (i == k) return values[q]; // Pivot ist das gesuchte
     else if (i < k)
         return randomizedSelect(values, p, q - 1, i);
