@@ -50,7 +50,7 @@ int main(int argc, char** argv)
     uint32_t* array = new uint32_t[999999]; // create and fill new array
     std::copy(numbers.begin(), numbers.end(), array);
     Timing::getInstance()->startRecord("array quicksort");
-    std::qsort(array, numbers.size(), sizeof(size_t), compare);
+    std::qsort(array, numbers.size(), sizeof(uint32_t), compare);
     std::cout << "array quicksort median: " << array[idxMed] << std::endl;
     Timing::getInstance()->stopRecord("array quicksort");
 
