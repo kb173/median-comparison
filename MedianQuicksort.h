@@ -1,8 +1,8 @@
 #pragma once
 
-size_t pivotPartition(std::vector<size_t>& values, size_t left, size_t right) {
-    size_t pivotIndex = left + (right - left) / 2;
-    size_t pivotValue = values[pivotIndex];
+uint32_t pivotPartition(std::vector<uint32_t>& values, uint32_t left, uint32_t right) {
+    uint32_t pivotIndex = left + (right - left) / 2;
+    uint32_t pivotValue = values[pivotIndex];
     int i = left;
     int j = right;
     while (i <= j) {
@@ -15,7 +15,7 @@ size_t pivotPartition(std::vector<size_t>& values, size_t left, size_t right) {
             j--;
         }
         if (i <= j) {
-            std::swap(values[i], values[j]);
+            swap(&values[i], &values[j]);
             i++;
             j--;
         }
@@ -23,16 +23,16 @@ size_t pivotPartition(std::vector<size_t>& values, size_t left, size_t right) {
     return i;
 }
 
-void quicksort(std::vector<size_t>& values, size_t left, size_t right)
+void quicksort(std::vector<uint32_t>& values, uint32_t left, uint32_t right)
 {
     if (left < right) {
-        size_t pivotIndex = pivotPartition(values, left, right);
+        uint32_t pivotIndex = pivotPartition(values, left, right);
         quicksort(values, left, pivotIndex - 1);
         quicksort(values, pivotIndex, right);
     }
 }
 
-size_t getQuicksortMedian(std::vector<size_t> values, size_t i)
+uint32_t getQuicksortMedian(std::vector<uint32_t> values, uint32_t i)
 {
     //std::qsort(numbers); // only takes array param -> custom implementation with vector
     quicksort(values, 0, values.size() - 1);
