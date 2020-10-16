@@ -7,6 +7,7 @@
 #include "MedianQuicksort.h"
 #include "MedianOfMedians.h"
 #include "RandomizedSelect.h"
+#include "Wirth.h"
 
 // TODO:
 // - combine partition function
@@ -48,7 +49,7 @@ int main(int argc, char** argv)
     size_t idxMed = (numbers.size() - 1) / 2;
     std::cout << "idx median = " << idxMed << " of " << numbers.size() << std::endl;
 
-    // vollständige Sortierung mit Quicksort und Ausgabe des mittleren Elements
+    // vollstï¿½ndige Sortierung mit Quicksort und Ausgabe des mittleren Elements
     Timing::getInstance()->startRecord("quicksort");
     std::cout << "quicksort median: " << getQuicksortMedian(numbers, idxMed) << std::endl;
     Timing::getInstance()->stopRecord("quicksort");
@@ -91,8 +92,9 @@ int main(int argc, char** argv)
     Timing::getInstance()->stopRecord("array median of medians");
 
     // noch ein ein weiterer Median - Algorithmus weil wir so cool sind
+    std::vector<size_t> numbers_wirth(numbers);  // Copy because wirth works in-place
     Timing::getInstance()->startRecord("wirth");
-    // TODO: implement
+    std::cout << "wirth kth element: " << getWirthKthSmallest(numbers_wirth, idxMed) << std::endl;
     Timing::getInstance()->stopRecord("wirth");
 
     // Verwendung des C++ STL function templates nth_element
