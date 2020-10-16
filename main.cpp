@@ -78,7 +78,7 @@ int main(int argc, char** argv)
     Timing::getInstance()->stopRecord("array median of medians");*/
 
     // noch ein ein weiterer Median - Algorithmus weil wir so cool sind
-    std::vector<size_t> numbers_wirth(numbers);  // Copy because wirth works in-place
+    std::vector<uint32_t> numbers_wirth(numbers);  // Copy because wirth works in-place
     Timing::getInstance()->startRecord("wirth");
     std::cout << "wirth kth element: " << getWirthKthSmallest(numbers_wirth, idxMed) << std::endl;
     Timing::getInstance()->stopRecord("wirth");

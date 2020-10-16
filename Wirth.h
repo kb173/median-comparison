@@ -2,15 +2,15 @@
 
 // http://ndevilla.free.fr/median/median/index.html
 
-size_t getWirthKthSmallest(std::vector<size_t> a, size_t k)
+uint32_t getWirthKthSmallest(std::vector<uint32_t> a, uint32_t k)
 {
-    size_t l = 0;
-    size_t m = a.size() - 1;
+    uint32_t l = 0;
+    uint32_t m = a.size() - 1;
 
     while (l < m) {
-        size_t x = a[k];
-        size_t i = l;
-        size_t j = m;
+        uint32_t x = a[k];
+        uint32_t i = l;
+        uint32_t j = m;
 
         do {
             while (a[i] < x) i++;
