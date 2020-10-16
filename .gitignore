@@ -34,6 +34,8 @@
 # visual studio build folder
 Debug/*
 Release/*
+x64/Debug/*
+x64/Release/*
 
 # visual studio project files
 .vs/*
@@ -41,3 +43,4 @@ median-comparison.sln
 median-comparison.vcxproj
 median-comparison.vcxproj.filters
 median-comparison.vcxproj.user
+enc_temp_folder/*

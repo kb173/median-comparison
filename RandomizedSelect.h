@@ -3,12 +3,12 @@
 #include <vector>
 
 // Lomuto Partitioning
-int randomizedPartition(std::vector<size_t>& values, int p, int r)
+int randomizedPartition(std::vector<uint32_t>& values, int p, int r)
 {
     int i = p + rand() % (r - p); // generate a random number in {p, ..., r}
     swap(&values[i], &values[r]);
 
-    int pivotValue = values[r];
+    uint32_t pivotValue = values[r];
     i = p - 1;
     for (int j = p; j < r; j++)
     {
@@ -24,12 +24,12 @@ int randomizedPartition(std::vector<size_t>& values, int p, int r)
 
 // TODO: Hoare Partitioning
 // https://www.geeksforgeeks.org/quicksort-using-random-pivoting/
-int randomizedPartition2(std::vector<size_t>& values, int low, int high)
+int randomizedPartition2(std::vector<uint32_t>& values, int low, int high)
 {
     int i = low + rand() % (high - low); // generate a random number in {p, ..., r}
-    std::swap(values[i], values[low]);
+    swap(&values[i], &values[low]);
 
-    int pivot = values[low];
+    uint32_t pivotValue = values[low];
     i = low - 1;
     int j = high + 1;
     while (true) {
@@ -37,42 +37,42 @@ int randomizedPartition2(std::vector<size_t>& values, int low, int high)
         // or equal to pivot
         do {
             i++;
-        } while (values[i] < pivot);
+        } while (values[i] < pivotValue);
 
         // Find rightmost element smaller than
         // or equal to pivot
         do {
             j--;
-        } while (values[j] > pivot);
+        } while (values[j] > pivotValue);
 
         // If two pointers met
         if (i >= j)
             return j;
 
-        std::swap(values[i], values[j]);
+        swap(&values[i], &values[j]);
     }
 }
 
-int randomizedPartition3(std::vector<size_t>& values, int l, int r)
+int randomizedPartition3(std::vector<uint32_t>& values, int l, int r)
 {
-    int n = r - l + 1;
-    int pivot = rand() % n;
-    std::swap(values[l + pivot], values[r]);
+    int i = rand() % (r - l + 1);
+    swap(&values[l + i], &values[r]);
 
-    int x = values[r], i = l;
+    uint32_t pivotValue = values[r];
+    i = l;
     for (int j = l; j <= r - 1; j++)
     {
-        if (values[j] <= x)
+        if (values[j] <= pivotValue)
         {
-            std::swap(values[i], values[j]);
+            swap(&values[i], &values[j]);
             i++;
         }
     }
-    std::swap(values[i], values[r]);
+    swap(&values[i], &values[r]);
     return i;
 }
 
-int randomizedSelect(std::vector<size_t> values, int p, int r, int i)
+uint32_t randomizedSelect(std::vector<uint32_t>& values, int p, int r, int i)
 {
     /*
     // Partition the array around a random element and
@@ -104,12 +104,17 @@ int randomizedSelect(std::vector<size_t> values, int p, int r, int i)
 
     if (p == r) return values[p];
 
-    //int q = randomizedPartition(values, p, r); // Pivot Element A[q]
+    int q = randomizedPartition(values, p, r); // Pivot Element A[q]
     //int q = randomizedPartition2(values, p, r); // Pivot Element A[q]
-    int q = randomizedPartition3(values, p, r); // Pivot Element A[q]
+    //int q = randomizedPartition3(values, p, r); // Pivot Element A[q]
     int k = q - p + 1; // Anzahl Elemente A[p..q]
     if (i == k) return values[q]; // Pivot ist das gesuchte
     else if (i < k)
         return randomizedSelect(values, p, q - 1, i);
     else return randomizedSelect(values, q + 1, r, i - k);
+}
+
+uint32_t getRandomizedSelectMedian(std::vector<uint32_t> values, int p, int r, int i)
+{
+    return randomizedSelect(values, p, r, i);
 }
