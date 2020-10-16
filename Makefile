@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -Wall
+CXXFLAGS = -Wall -O3
 
 mc: main.o Timing.o
 	$(CXX) $(CXXFLAGS) -o mc main.o Timing.o
