@@ -1,40 +1,26 @@
 #pragma once
 
-uint32_t pivotPartition(std::vector<uint32_t>& values, uint32_t left, uint32_t right) {
-    uint32_t pivotIndex = left + (right - left) / 2;
-    uint32_t pivotValue = values[pivotIndex];
-    int i = left;
-    int j = right;
-    while (i <= j) {
-        while (values[i] < pivotValue)
-        {
-            i++;
-        }
-        while (values[j] > pivotValue)
-        {
-            j--;
-        }
-        if (i <= j) {
-            swap(&values[i], &values[j]);
-            i++;
-            j--;
-        }
-    }
-    return i;
+int pivotPartition(std::vector<uint32_t>& a, int p, int r) {
+
+    return partition(a, p, r);
 }
 
-void quicksort(std::vector<uint32_t>& values, uint32_t left, uint32_t right)
+void quicksort(std::vector<uint32_t>& a, int p, int r)
 {
-    if (left < right) {
-        uint32_t pivotIndex = pivotPartition(values, left, right);
-        quicksort(values, left, pivotIndex - 1);
-        quicksort(values, pivotIndex, right);
+    if (p < r) {
+        int i = pivotPartition(a, p, r);
+#ifdef PARTITION_TYPE_LOMUTO
+        quicksort(a, p, i - 1);
+#elif defined PARTITION_TYPE_HOARE
+        quicksort(a, p, i);
+#endif
+        quicksort(a, i + 1, r);
     }
 }
 
-uint32_t getQuicksortMedian(std::vector<uint32_t> values, uint32_t i)
+uint32_t getQuicksortMedian(std::vector<uint32_t> a, int i)
 {
     //std::qsort(numbers); // only takes array param -> custom implementation with vector
-    quicksort(values, 0, values.size() - 1);
-    return values[i];
+    quicksort(a, 0, a.size() - 1);
+    return a[i];
 }
