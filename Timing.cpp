@@ -55,8 +55,6 @@ void Timing::stopRecord(const std::string& name) {
  */
 void Timing::print(const bool prettyPrint) const {
 	std::cout << "--------------------" << std::endl << "Results: " << std::endl << "--------------------" << std::endl;
-
-    std::string blub;
 	auto it = mResults.begin();
 	while(it != mResults.end()) {
 		if (prettyPrint) {
@@ -66,7 +64,6 @@ void Timing::print(const bool prettyPrint) const {
 		}
 		it++;
 	}
-
 	std::cout << "--------------------" << std::endl;
 }
 
