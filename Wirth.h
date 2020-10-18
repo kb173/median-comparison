@@ -17,7 +17,7 @@ uint32_t getWirthKthSmallest(std::vector<uint32_t> a, uint32_t k)
             while (x < a[j]) j--;
 
             if (i <= j) {
-                std::swap(a[i], a[j]);
+                swap(&a[i], &a[j]);
                 i++;
                 j--;
             }

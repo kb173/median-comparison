@@ -1,6 +1,6 @@
 #pragma once
 
-// custom swap function
+// custom swap function for just pointer swapping (check difference)
 void swap(uint32_t* a, uint32_t* b)
 {
     uint32_t temp = *a;

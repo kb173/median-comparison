@@ -11,85 +11,85 @@
 
 // TODO:
 // - combine partition function
-// - wirth
 // - fix Median of Medians
-// - fix randomized select
-// - use custom swap for just pointer swapping (check difference)
 
 int main(int argc, char** argv)
 {
     // read test values from input file
-    Timing::getInstance()->startRecord("init");
+    std::string type = "init\t\t\t\t\t";
+    Timing::getInstance()->startRecord(type);
     std::vector<uint32_t > numbers = readFromFile("testdata");
-    std::cout << "just read " << numbers.size() << " values" << std::endl;
-    Timing::getInstance()->stopRecord("init");
+    Timing::getInstance()->stopRecord(type);
 
-    // index of median
+    // index of median is exactly middle for odd datasets, not supported for even :p
     if (numbers.size() % 2 == 0)
     {
         // TODO: just use the next element? calc arithmetic mean?
         std::cout << "TODO: define how to handle even datasets" << std::endl;
         return 1;
     }
-
     uint32_t idxMed = (numbers.size() - 1) / 2;
-    std::cout << "idx median = " << idxMed << " of " << numbers.size() << std::endl;
+    std::cout << "calculating median on index " << idxMed << " of " << numbers.size() << " elems..." << std::endl;
 
-    // vollst�ndige Sortierung mit Quicksort und Ausgabe des mittleren Elements
-    Timing::getInstance()->startRecord("quicksort");
-    std::cout << "quicksort median: " << getQuicksortMedian(numbers, idxMed) << std::endl;
-    Timing::getInstance()->stopRecord("quicksort");
+    // create an array from vector for algorithms using array params
+    uint32_t* array = new uint32_t[numbers.size()];
 
-    // using std quicksort for array
-    // TODO: decide how the fuck to create a dynamic size array from vector...
-    //size_t* array = new size_t[numbers.size]; // create and fill new array
-    //size_t* array = &numbers[0]; // just a pointer to first element as array
-    //size_t* array[numbers.size()]; // invalid c++ -> non-constant expression!
-    //std::copy(numbers.begin(), numbers.end(), array);
-    //size_t* tmp = numbers.data(); // c++11 returns pointer to first elem
-    uint32_t* array = new uint32_t[999999]; // create and fill new array
-    std::copy(numbers.begin(), numbers.end(), array);
-    Timing::getInstance()->startRecord("array quicksort");
-    std::qsort(array, numbers.size(), sizeof(uint32_t), compare);
-    std::cout << "array quicksort median: " << array[idxMed] << std::endl;
-    Timing::getInstance()->stopRecord("array quicksort");
+    // vollständige Sortierung mit Quicksort und Ausgabe des mittleren Elements
+    type = "quicksort median\t\t\t";
+    Timing::getInstance()->startRecord(type);
+    std::cout << type << getQuicksortMedian(numbers, idxMed) << std::endl;
+    Timing::getInstance()->stopRecord(type);
 
-    // comparison "quick" sort with std::sort (introsort)
-    std::copy(numbers.begin(), numbers.end(), array);
-    Timing::getInstance()->startRecord("array std sort");
-    std::sort(array, array + numbers.size());
-    std::cout << "array std sort median: " << array[idxMed] << std::endl;
-    Timing::getInstance()->stopRecord("array std sort");
+    // comparison of std::qsort and std::sort
+        // using std quicksort for array
+        type = "array quicksort\t\t\t\t";
+        std::copy(numbers.begin(), numbers.end(), array);
+        Timing::getInstance()->startRecord(type);
+        std::qsort(array, numbers.size(), sizeof(uint32_t), compare);
+        std::cout << type << array[idxMed] << std::endl;
+        Timing::getInstance()->stopRecord(type);
+
+        // comparison "quick" sort with std::sort (introsort)
+        type = "array std sort\t\t\t\t";
+        std::copy(numbers.begin(), numbers.end(), array);
+        Timing::getInstance()->startRecord(type);
+        std::sort(array, array + numbers.size());
+        std::cout << type << array[idxMed] << std::endl;
+        Timing::getInstance()->stopRecord(type);
 
     // vorgestellter Randomzized - Select rekursiv implementiert
-    Timing::getInstance()->startRecord("randomized select");
-    std::cout << "randomized select: " << getRandomizedSelectMedian(numbers, 0, numbers.size() - 1, idxMed + 1) << std::endl;
-    Timing::getInstance()->stopRecord("randomized select");
+    type = "randomized select\t\t\t";
+    Timing::getInstance()->startRecord(type);
+    std::cout << type << getRandomizedSelectMedian(numbers, 0, numbers.size() - 1, idxMed + 1) << std::endl;
+    Timing::getInstance()->stopRecord(type);
 
     // ein weiterer Median - Algorithmus aus der Literatur - implemented with std::vector
+    type = "vector median of medians\t\t";
     std::vector<uint32_t> mom_numbers = std::vector<uint32_t>(numbers);
-    Timing::getInstance()->startRecord("vector median of medians");
-    std::cout << "vector median of medians: " << mom_numbers[findMedianOfMedians(mom_numbers, 0, numbers.size() - 1, idxMed + 1)] << std::endl;
-    Timing::getInstance()->stopRecord("vector median of medians");
+    Timing::getInstance()->startRecord(type);
+    std::cout << type  << mom_numbers[findMedianOfMedians(mom_numbers, 0, numbers.size() - 1, idxMed + 1)] << std::endl;
+    Timing::getInstance()->stopRecord(type);
 
     // ein weiterer Median - Algorithmus aus der Literatur - realized with array
-    /*std::copy(numbers.begin(), numbers.end(), array);
-    Timing::getInstance()->startRecord("array median of medians");
-    std::cout << "array median of medians: " << getMedianOfMedians(array, 0, numbers.size() - 1, idxMed + 1) << std::endl;
-    Timing::getInstance()->stopRecord("array median of medians");*/
+    /*type = "array median of medians";
+    std::copy(numbers.begin(), numbers.end(), array);
+    Timing::getInstance()->startRecord(type);
+    std::cout << type << ": \t\t" << getMedianOfMedians(array, 0, numbers.size() - 1, idxMed + 1) << std::endl;
+    Timing::getInstance()->stopRecord(type);*/
 
     // noch ein ein weiterer Median - Algorithmus weil wir so cool sind
-    Timing::getInstance()->startRecord("wirth");
-    std::cout << "wirth kth element: " << getWirthKthSmallest(numbers, idxMed) << std::endl;
-    Timing::getInstance()->stopRecord("wirth");
+    type = "wirth kth element\t\t\t";
+    Timing::getInstance()->startRecord(type);
+    std::cout << type << getWirthKthSmallest(numbers, idxMed) << std::endl;
+    Timing::getInstance()->stopRecord(type);
 
     // Verwendung des C++ STL function templates nth_element
-    Timing::getInstance()->startRecord("nth element");
+    type = "nth element\t\t\t\t";
+    Timing::getInstance()->startRecord(type);
     std::nth_element(numbers.begin(), numbers.begin() + idxMed, numbers.end());
-    std::cout << "nth element: " << numbers[idxMed] << std::endl;
-    Timing::getInstance()->stopRecord("nth element");
+    std::cout << type << numbers[idxMed] << std::endl;
+    Timing::getInstance()->stopRecord(type);
 
-    //Timing::getInstance()->getResults();
     Timing::getInstance()->print();
     return 0;
 }

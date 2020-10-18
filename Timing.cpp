@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <iostream>
 #include <sstream>
+#include <iomanip> // setw for padleft
+
 #include "Timing.h"
 
 Timing* Timing::mInstance = 0;
@@ -52,19 +54,20 @@ void Timing::stopRecord(const std::string& name) {
  * Set prettyPrint to true to display mm:ss.ms instead of ms.
  */
 void Timing::print(const bool prettyPrint) const {
-	std::cout << "-----" << std::endl << "Results: " << std::endl << "-----" << std::endl;
+	std::cout << "--------------------" << std::endl << "Results: " << std::endl << "--------------------" << std::endl;
 
+    std::string blub;
 	auto it = mResults.begin();
 	while(it != mResults.end()) {
 		if (prettyPrint) {
 			std::cout << it->first << ": " << parseDate((int) it->second.count()) << std::endl;
 		} else {
-			std::cout << it->first << ": " << it->second.count() << "ms" << std::endl;
+			std::cout << it->first << ": " << std::setfill(' ') << std::setw(10) << std::fixed << std::setprecision(4) << it->second.count() << "ms" << std::endl;
 		}
 		it++;
 	}
 
-	std::cout << "-----" << std::endl;
+	std::cout << "--------------------" << std::endl;
 }
 
 /**

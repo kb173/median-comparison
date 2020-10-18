@@ -8,15 +8,14 @@
 std::vector<uint32_t > readFromFile(const char* filePath)
 {
     std::vector<uint32_t > numbers;
-    std::cout << "read file: " << filePath << "..." << std::endl;
+    //std::cout << "read file: " << filePath << "..." << std::endl;
     std::ifstream in(filePath);
     if (in.is_open())
     {
         std::string line;
         std::getline(in, line);
         int count = std::stoi(line);
-
-        std::cout << "total: " << count << " elems" << std::endl;
+        //std::cout << "total: " << count << " elems" << std::endl;
 
         int idx = 0;
         while (in.good() && idx < count) {
