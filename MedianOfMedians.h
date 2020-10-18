@@ -7,6 +7,7 @@ uint32_t partition(std::vector<uint32_t> &v, uint32_t left, uint32_t right, uint
 
 // Return the index of an element which is close to (but likely not exactly) the median.
 uint32_t findMedianOfMedians(std::vector<uint32_t> &v, uint32_t left, uint32_t right, uint32_t n) {
+ 
     while (true) {
         if (left == right) {
             return left;
@@ -26,8 +27,8 @@ uint32_t findMedianOfMedians(std::vector<uint32_t> &v, uint32_t left, uint32_t r
 }
 
 uint32_t partition(std::vector<uint32_t> &v, uint32_t left, uint32_t right, uint32_t pivotIndex, uint32_t n) {
+    
     uint32_t pivotValue = v[pivotIndex];
-
     swap(&v[pivotIndex], &v[right]);
 
     uint32_t storeIndex = left;
@@ -72,10 +73,8 @@ uint32_t partition5(std::vector<uint32_t> &v, uint32_t left, uint32_t right) {
             swap(&v[j - 1], &v[j]);
             j = j - 1;
         }
-
         i = i + 1;
     }
-
     return (left + right) / 2;
 }
 

@@ -9,9 +9,6 @@
 #include "RandomizedSelect.h"
 #include "Wirth.h"
 
-// TODO:
-// - combine partition function
-// - fix Median of Medians
 
 int main(int argc, char** argv)
 {
