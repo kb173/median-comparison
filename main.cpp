@@ -65,17 +65,9 @@ int main(int argc, char** argv)
 
     // ein weiterer Median - Algorithmus aus der Literatur - implemented with std::vector
     type = "vector median of medians\t\t";
-    std::vector<uint32_t> mom_numbers = std::vector<uint32_t>(numbers);
     Timing::getInstance()->startRecord(type);
-    std::cout << type  << mom_numbers[findMedianOfMedians(mom_numbers, 0, numbers.size() - 1, idxMed + 1)] << std::endl;
+    std::cout << type << getMedianOfMedians(numbers, 0, numbers.size() - 1, idxMed) << std::endl;
     Timing::getInstance()->stopRecord(type);
-
-    // ein weiterer Median - Algorithmus aus der Literatur - realized with array
-    /*type = "array median of medians";
-    std::copy(numbers.begin(), numbers.end(), array);
-    Timing::getInstance()->startRecord(type);
-    std::cout << type << ": \t\t" << getMedianOfMedians(array, 0, numbers.size() - 1, idxMed + 1) << std::endl;
-    Timing::getInstance()->stopRecord(type);*/
 
     // noch ein ein weiterer Median - Algorithmus weil wir so cool sind
     type = "wirth kth element\t\t\t";

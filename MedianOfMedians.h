@@ -28,14 +28,14 @@ uint32_t findMedianOfMedians(std::vector<uint32_t> &v, uint32_t left, uint32_t r
 uint32_t partition(std::vector<uint32_t> &v, uint32_t left, uint32_t right, uint32_t pivotIndex, uint32_t n) {
     uint32_t pivotValue = v[pivotIndex];
 
-    std::swap(v[pivotIndex], v[right]);
+    swap(&v[pivotIndex], &v[right]);
 
     uint32_t storeIndex = left;
 
     // Move all elements smaller than the pivot to the left of the pivot
     for (uint32_t i = left; i < right; i++) {
         if (v[i] < pivotValue) {
-            std::swap(v[storeIndex], v[i]);
+            swap(&v[storeIndex], &v[i]);
             storeIndex++;
         }
     }
@@ -46,12 +46,12 @@ uint32_t partition(std::vector<uint32_t> &v, uint32_t left, uint32_t right, uint
 
     for (uint32_t i = storeIndex; i < right; i++) {
         if (v[i] == pivotValue) {
-            std::swap(v[storeIndexEq], v[i]);
+            swap(&v[storeIndexEq], &v[i]);
             storeIndexEq++;
         }
     }
 
-    std::swap(v[right], v[storeIndexEq]);
+    swap(&v[right], &v[storeIndexEq]);
 
     if (n < storeIndex) {
         return storeIndex;
@@ -69,7 +69,7 @@ uint32_t partition5(std::vector<uint32_t> &v, uint32_t left, uint32_t right) {
         uint32_t j = i;
 
         while (j > left && v[j - 1] > v[j]) {
-            std::swap(v[j - 1], v[j]);
+            swap(&v[j - 1], &v[j]);
             j = j - 1;
         }
 
@@ -95,10 +95,14 @@ uint32_t pivot(std::vector<uint32_t> &v, uint32_t left, uint32_t right) {
         }
 
         uint32_t median5 = partition5(v, i, subRight);
-        std::swap(v[median5], v[left + (i - left) / 5]);
+        swap(&v[median5], &v[left + (i - left) / 5]);
     }
 
     // compute the median of the n/5 medians-of-five
     uint32_t mid = (right - left) / 10 + left + 1;
     return findMedianOfMedians(v, left, left + (right - left) / 5, mid);
+}
+
+uint32_t getMedianOfMedians(std::vector<uint32_t> v, uint32_t left, uint32_t right, uint32_t n) {
+    return v[findMedianOfMedians(v, left, right, n)];
 }
