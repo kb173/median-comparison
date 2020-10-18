@@ -67,8 +67,9 @@ int main(int argc, char** argv)
     Timing::getInstance()->stopRecord("randomized select");
 
     // ein weiterer Median - Algorithmus aus der Literatur - implemented with std::vector
+    std::vector<uint32_t> mom_numbers = std::vector<uint32_t>(numbers);
     Timing::getInstance()->startRecord("vector median of medians");
-    std::cout << "vector median of medians: " << getMedianOfMedians(numbers, idxMed + 1) << std::endl;
+    std::cout << "vector median of medians: " << mom_numbers[findMedianOfMedians(mom_numbers, 0, numbers.size() - 1, idxMed + 1)] << std::endl;
     Timing::getInstance()->stopRecord("vector median of medians");
 
     // ein weiterer Median - Algorithmus aus der Literatur - realized with array
@@ -78,9 +79,8 @@ int main(int argc, char** argv)
     Timing::getInstance()->stopRecord("array median of medians");*/
 
     // noch ein ein weiterer Median - Algorithmus weil wir so cool sind
-    std::vector<uint32_t> numbers_wirth(numbers);  // Copy because wirth works in-place
     Timing::getInstance()->startRecord("wirth");
-    std::cout << "wirth kth element: " << getWirthKthSmallest(numbers_wirth, idxMed) << std::endl;
+    std::cout << "wirth kth element: " << getWirthKthSmallest(numbers, idxMed) << std::endl;
     Timing::getInstance()->stopRecord("wirth");
 
     // Verwendung des C++ STL function templates nth_element
