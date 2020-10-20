@@ -44,3 +44,7 @@ vector median of medians only (approximative)   :    11.3237ms
 wirth kth element                               :     8.5368ms
 --------------------
 ```
+
+## Complexity
+
+The algorithms which fully sort the array (quicksort median, array quicksort, array std sort) have an average complexity of O(N logN). All 'proper' median algorithms (randomized select, vector median of medians, wirth kth element, nth element) have an average complexity of O(N). The difference is well visible in the results above.
